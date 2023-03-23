@@ -11,6 +11,10 @@ class InvocationManager {
   async execute(invocation) {
    return await this.executionHandler.execute(invocation);
   }
+
+  async executeCloudPlatform(invocation) {
+    return await this.executionHandler.waitForCloudPlatform(invocation);
+  }
 }
 
 module.exports = {
