@@ -73,6 +73,7 @@ class TestRunnerCommand {
   }
 
   _buildEnvHint(env) {
+    console.log('Value of env variable from TestRunnerCommand', env.DETOX_CONFIG_SNAPSHOT_PATH);
     return _(env)
       .mapKeys((_value, key) => key.toUpperCase())
       .pickBy((_value, key) => key.startsWith('DETOX_'))
