@@ -84,7 +84,11 @@ class DetoxSecondaryContext extends DetoxContext {
    */
   [$restoreSessionState]() {
     console.log('Tag:DetoxSecondaryContext accessing env variable process.env.DETOX_CONFIG_SNAPSHOT_PATH', process.env.DETOX_CONFIG_SNAPSHOT_PATH);
-    return SessionState.parse(fs.readFileSync(process.env.DETOX_CONFIG_SNAPSHOT_PATH));
+    let DETOX_CONFIG_SNAPSHOT_PATH = process.env.DETOX_CONFIG_SNAPSHOT_PATH;
+    console.log('Tag: Deleting env variable', process.env.DETOX_CONFIG_SNAPSHOT_PATH);
+    delete process.env.DETOX_CONFIG_SNAPSHOT_PATH;
+    console.log('Tag: env variable deleted', process.env.DETOX_CONFIG_SNAPSHOT_PATH);
+    return SessionState.parse(fs.readFileSync(DETOX_CONFIG_SNAPSHOT_PATH));
   }
   //#endregion
 }
