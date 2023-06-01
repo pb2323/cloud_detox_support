@@ -27,9 +27,15 @@ class TestRunnerCommand {
     this._argv = runnerConfig.args;
     this._retries = runnerConfig.retries;
     this._envHint = this._buildEnvHint(opts.env);
+    console.log("tag: Value of _envHint is", this._envHint)
     this._envFwd = {};
+    this._tempConfigPath = {NEW_CONFIG_PATH: opts.env.DETOX_CONFIG_SNAPSHOT_PATH};
+    console.log("tag: Assigning DETOX_CONFIG_SNAPSHOT_PATH to a new variable", this._tempConfigPath)
     if (runnerConfig.forwardEnv) {
+      console.log("tag: forwardEnv is true")
       this._envFwd = this._buildEnvOverride(cliConfig, deviceConfig);
+      console.log("_envFwd object is", this._envFwd)
+      console.log("_envFwd will override process.env")
       Object.assign(this._envHint, this._envFwd);
     }
   }
@@ -116,10 +122,22 @@ class TestRunnerCommand {
   }
 
   async _spawnTestRunner() {
-    const fullCommand = this._buildSpawnArguments().map(escapeSpaces);
+    let fullCommand = this._buildSpawnArguments().map(escapeSpaces);
+    fullCommand.push('--no-cache')
     const fullCommandWithHint = printEnvironmentVariables(this._envHint) + fullCommand.join(' ');
+    console.log('tag: fullCommandWithHint is', fullCommandWithHint)
 
     log.info.begin({ env: this._envHint }, fullCommandWithHint);
+
+    console.log('tag: process.env values before invoking jest command', process.env)
+    console.log('tag: envFwd value before invoking jest command', this._envFwd)
+    console.log('tag: final env variable passed to the jest command', _({})
+          .assign(process.env)
+          .assign(this._envFwd)
+          .assign(this._tempConfigPath)
+          .omitBy(_.isUndefined)
+          .tap(prependNodeModulesBinToPATH)
+          .value())
 
     return new Promise((resolve, reject) => {
       cp.spawn(fullCommand[0], fullCommand.slice(1), {
@@ -128,6 +146,7 @@ class TestRunnerCommand {
         env: _({})
           .assign(process.env)
           .assign(this._envFwd)
+          .assign(this._tempConfigPath)
           .omitBy(_.isUndefined)
           .tap(prependNodeModulesBinToPATH)
           .value()

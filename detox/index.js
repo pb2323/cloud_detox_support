@@ -1,5 +1,7 @@
 function create() {
-  console.log('tag: Value of DETOX_CONFIG_SNAPSHOT_PATH env variable from index create method', process.env.DETOX_CONFIG_SNAPSHOT_PATH);
+  console.log('tag: Value of DETOX_CONFIG_SNAPSHOT_PATH from create() of index.js', process.env.DETOX_CONFIG_SNAPSHOT_PATH);
+  console.log('tag: Value of NEW_CONFIG_PATH from create() of index.js', process.env.NEW_CONFIG_PATH);
+
   if (process.env.DETOX_CONFIG_SNAPSHOT_PATH) {
     return require('./src/realms/secondary');
   } else {
