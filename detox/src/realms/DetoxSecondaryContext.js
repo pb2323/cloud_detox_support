@@ -85,9 +85,21 @@ class DetoxSecondaryContext extends DetoxContext {
   [$restoreSessionState]() {
     console.log('Tag:secondary context env variables while restoring session state', process.env);
     let DETOX_CONFIG_SNAPSHOT_PATH = process.env.NEW_CONFIG_PATH;
-    console.log('Tag: resetting process env variable for next session')
+    console.log('Tag: resetting process env variable for next session');
     process.env = JSON.parse(JSON.stringify(process.env));
-    return SessionState.parse(fs.readFileSync(DETOX_CONFIG_SNAPSHOT_PATH));
+
+    let sessionDetailsFilePath = 'session.json';
+    let sessionDetails = fs.readFileSync(sessionDetailsFilePath);
+
+    fs.unlink(sessionDetailsFilePath, (err) => {
+      if (err) {
+          throw err;
+      }
+
+      console.log("Delete Detox Session File successfully.");
+    });
+
+    return SessionState.parse(sessionDetails);
   }
   //#endregion
 }

@@ -132,6 +132,7 @@ class DetoxPrimaryContext extends DetoxContext {
 
     this[_sessionFile] = temporary.for.json(this[$sessionState].id);
     await fs.writeFile(this[_sessionFile], this[$sessionState].stringify());
+    await fs.writeFile('session.json', this[$sessionState].stringify());
     console.log('Tag:DetoxPrimaryContext before setting env variable', process.env.DETOX_CONFIG_SNAPSHOT_PATH);
     process.env.DETOX_CONFIG_SNAPSHOT_PATH = this[_sessionFile];
     console.log('Tag:DetoxPrimaryContext after setting env variable', process.env.DETOX_CONFIG_SNAPSHOT_PATH);
