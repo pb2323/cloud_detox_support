@@ -90,7 +90,7 @@ class DetoxSecondaryContext extends DetoxContext {
 
     let sessionDetailsFilePath = 'session.json';
     let sessionDetails = fs.readFileSync(sessionDetailsFilePath);
-
+    console.log('Tag: content of session.json temp file from secondary context', sessionDetailsFilePath);
     fs.unlink(sessionDetailsFilePath, (err) => {
       if (err) {
           throw err;
