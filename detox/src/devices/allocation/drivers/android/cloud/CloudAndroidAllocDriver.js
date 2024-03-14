@@ -7,12 +7,6 @@
  * @implements {AllocationDriverBase}
  */
 class CloudAndroidAllocDriver {
-    /**
-     * @param {object} options
-     * @param {import('../../../../common/drivers/android/exec/ADB')} options.adb
-     * @param {import('../../../DeviceRegistry')} options.deviceRegistry
-     * @param {import('../FreeDeviceFinder')} options.freeDeviceFinder
-     */
     constructor() {
         this._idlePromise = Promise.resolve();
     }
