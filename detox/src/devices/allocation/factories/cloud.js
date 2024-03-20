@@ -1,10 +1,10 @@
 // @ts-nocheck
 const DeviceAllocatorFactory = require('./base');
+const CloudAndroidAllocDriver = require('../drivers/android/cloud/CloudAndroidAllocDriver');
 
 class Noop extends DeviceAllocatorFactory {
     _createDriver() {
-      const AllocationDriverBase = require('../drivers/AllocationDriverBase');
-      return new AllocationDriverBase();
+      return new CloudAndroidAllocDriver();
     }
 }
   
