@@ -133,7 +133,9 @@ async function composeDetoxConfig({
       'accessKey': _.get(cloudAuthenticationConfig, 'accessKey'),
       'networkLogs': _.get(artifactsConfig, 'plugins.networkLogs.enabled'),
       'deviceLogs': _.get(artifactsConfig, 'plugins.deviceLogs.enabled'),
-      'video': _.get(artifactsConfig, 'plugins.video.enabled')
+      'video': _.get(artifactsConfig, 'plugins.video.enabled'),
+      'local': _.get(artifactsConfig, 'plugins.local.enabled'),
+      'forceLocal': _.get(artifactsConfig, 'plugins.forceLocal.enabled')
     };
     sessionConfig.server += `?caps=${encodeURIComponent(JSON.stringify(query_param))}`;
   }
