@@ -8,6 +8,7 @@ const collectCliConfig = require('./collectCliConfig');
 const composeAppsConfig = require('./composeAppsConfig');
 const composeArtifactsConfig = require('./composeArtifactsConfig');
 const composeBehaviorConfig = require('./composeBehaviorConfig');
+const composeCommandsConfig = require('./composeCommandsConfig');
 const composeDeviceConfig = require('./composeDeviceConfig');
 const composeLoggerConfig = require('./composeLoggerConfig');
 const composeRunnerConfig = require('./composeRunnerConfig');
@@ -121,7 +122,6 @@ async function composeDetoxConfig({
   if (isCloudSession) {
     const query_param = {
       'device': _.get(deviceConfig, 'device.name'),
-      'os': _.get(deviceConfig, 'device.os'),
       'osVersion': _.get(deviceConfig, 'device.osVersion'),
       'name': _.get(sessionConfig, 'name'),
       'project': _.get(sessionConfig, 'project'),
@@ -142,6 +142,11 @@ async function composeDetoxConfig({
     };
     sessionConfig.server += `?caps=${encodeURIComponent(JSON.stringify(query_param))}`;
   }
+  const commandsConfig = composeCommandsConfig({
+    appsConfig,
+    localConfig,
+  });
+
   const result = {
     configurationName,
 
@@ -149,6 +154,7 @@ async function composeDetoxConfig({
     artifacts: artifactsConfig,
     behavior: behaviorConfig,
     cli: cliConfig,
+    commands: commandsConfig,
     device: deviceConfig,
     logger: loggerConfig,
     testRunner: runnerConfig,

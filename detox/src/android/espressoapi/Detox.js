@@ -58,17 +58,6 @@ class Detox {
     };
   }
 
-  static extractInitialIntent() {
-    return {
-      target: {
-        type: "Class",
-        value: "com.wix.detox.Detox"
-      },
-      method: "extractInitialIntent",
-      args: []
-    };
-  }
-
   static getAppContext() {
     return {
       target: {
@@ -77,6 +66,21 @@ class Detox {
       },
       method: "getAppContext",
       args: []
+    };
+  }
+
+  static generateViewHierarchyXml(shouldInjectTestIds) {
+    if (typeof shouldInjectTestIds !== "boolean") throw new Error("shouldInjectTestIds should be a boolean, but got " + (shouldInjectTestIds + (" (" + (typeof shouldInjectTestIds + ")"))));
+    return {
+      target: {
+        type: "Class",
+        value: "com.wix.detox.Detox"
+      },
+      method: "generateViewHierarchyXml",
+      args: [{
+        type: "boolean",
+        value: shouldInjectTestIds
+      }]
     };
   }
 

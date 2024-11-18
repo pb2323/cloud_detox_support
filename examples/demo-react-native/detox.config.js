@@ -20,17 +20,20 @@ module.exports = {
     "ios.release": {
       "type": "ios.app",
       "binaryPath": "ios/build/Build/Products/Release-iphonesimulator/example.app",
-      "build": "export RCT_NO_LAUNCH_PACKAGER=true && xcodebuild -workspace ios/example.xcworkspace -UseNewBuildSystem=NO -scheme example -configuration Release -sdk iphonesimulator -derivedDataPath ios/build -quiet"
+      "build": "export RCT_NO_LAUNCH_PACKAGER=true && xcodebuild -workspace ios/example.xcworkspace -UseNewBuildSystem=NO -scheme example -configuration Release -sdk iphonesimulator -derivedDataPath ios/build -quiet",
     },
     "ios.debug": {
       "type": "ios.app",
       "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/example.app",
-      "build": "xcodebuild -workspace ios/example.xcworkspace -UseNewBuildSystem=NO -scheme example -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build"
+      "build": "xcodebuild -workspace ios/example.xcworkspace -UseNewBuildSystem=NO -scheme example -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
+      "start": "scripts/start-rn.sh ios",
     },
     "android.debug": {
       "type": "android.apk",
       "binaryPath": "android/app/build/outputs/apk/debug/app-debug.apk",
-      "build": "cd android ; ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug ; cd -"
+      "build": "cd android ; ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug ; cd -",
+      "start": "scripts/start-rn.sh android",
+      reversePorts: [8081]
     },
     "android.release": {
       "type": "android.apk",
@@ -43,7 +46,8 @@ module.exports = {
       type: "ios.simulator",
       headless: Boolean(process.env.CI),
       device: {
-        type: "iPhone 12 Pro"
+        type: "iPhone 15 Pro Max",
+        os: "17.0.1"
       }
     },
     emulator: {
@@ -51,29 +55,31 @@ module.exports = {
       headless: Boolean(process.env.CI),
       gpuMode: process.env.CI ? 'off' : undefined,
       device: {
-        avdName: "Pixel_API_28"
+        avdName: "Pixel_3a_API_34"
       },
-      utilBinaryPaths: [
-        "./cache/test-butler-app.apk"
-      ],
+      reversePorts: [8081],
+
+      // utilBinaryPaths: [
+      //   "../../detox/test/e2e/util-binary/detoxbutler-1.0.4-aosp-release.apk"
+      // ],
     },
     "genymotion.emulator.uuid": {
       type: "android.genycloud",
       device: {
-        recipeUUID: "a50a71d6-da90-4c67-bdfa-5b602b0bbd15"
+        recipeUUID: "9baf12f9-a645-4ffa-a688-0e92584d6194"
       },
-      utilBinaryPaths: [
-        "./cache/test-butler-app.apk"
-      ],
+      // utilBinaryPaths: [
+      //   "../../detox/test/e2e/util-binary/detoxbutler-1.0.4-genymotion-release.apk"
+      // ],
     },
     "genymotion.emulator.name": {
       type: "android.genycloud",
       device: {
-        recipeName: "Detox_Pixel_API_29"
+        recipeName: "Detox_Pixel_3a_API_34"
       },
-      utilBinaryPaths: [
-        "./cache/test-butler-app.apk"
-      ],
+      // utilBinaryPaths: [
+      //   "../../detox/test/e2e/util-binary/detoxbutler-1.0.4-genymotion-release.apk"
+      // ],
     }
   },
   configurations: {
