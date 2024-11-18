@@ -93,9 +93,9 @@ function ifString(value, mapper) {
 
 function validateCloudConfig(artifactsConfig) {
   var plugins = artifactsConfig && artifactsConfig.plugins;
-  const cloudSupportedPlugins = ['video', 'deviceLogs', 'networkLogs', 'local', 'forceLocal'];
+  const cloudSupportedLogs = ['video', 'deviceLogs', 'networkLogs'];
   const cloudSupportedCaps = ['plugins'];
-  plugins = cloudSupportedPlugins.reduce((accumulator, plugin) => {
+  plugins = cloudSupportedLogs.reduce((accumulator, plugin) => {
     const defaultEnabled = plugin == 'video' ? true : false;
     if (typeof accumulator[plugin] === 'object' && Object.keys(accumulator[plugin]).length > 1) {
       logger.warn(`[ArtifactsConfig] Only the all and none presets are honoured in the ${plugin} plugin for device type 'android.cloud' and default is enabled:${defaultEnabled}.`);
@@ -114,7 +114,7 @@ function validateCloudConfig(artifactsConfig) {
     return accumulator;
   }, plugins);
   let ignoredCloudConfigParams = _.difference(Object.keys(artifactsConfig), cloudSupportedCaps);
-  ignoredCloudConfigParams = ignoredCloudConfigParams.concat(_.difference(Object.keys(plugins), cloudSupportedPlugins));
+  ignoredCloudConfigParams = ignoredCloudConfigParams.concat(_.difference(Object.keys(plugins), cloudSupportedLogs));
   if (ignoredCloudConfigParams.length > 0)
     logger.warn(`[ArtifactsConfig] The properties ${ignoredCloudConfigParams} are not honoured for device type 'android.cloud'.`);
   // Should we delete the ignored properties also?

@@ -154,6 +154,11 @@ declare global {
             build?: string;
             project?: string;
             name?: string;
+            local?: boolean;
+            forceLocal?: boolean;
+            localIdentifier?: string;
+            networkLogsIncludeHosts?: string | string[];
+            networkLogsExcludeHosts?: string | string[];
         }
 
         interface DetoxCloudAuthConfig {

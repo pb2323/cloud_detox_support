@@ -442,7 +442,7 @@ Check that in your Detox config${this._atPath()}`,
 {
   "type": ${J(type)},
   "device": {
-    ${expectedProperties.map(p => `${J(p)}: ... `).join(',\n    ')} 
+    ${expectedProperties.map(p => `${J(p)}: ... `).join(',\n    ')}
   }
 }
 Check that in your Detox config${this._atPath()}`,
@@ -696,9 +696,9 @@ Examine your Detox config${this._atPath()}`,
     });
   }
 
-  invalidCloudSessionProperty( capability ) {
+  invalidCloudSessionProperty( capability, type='string' ) {
     return new DetoxConfigError({
-      message: `session.${capability} property is not a valid string`,
+      message: `session.${capability} property is not a valid ${type}`,
       hint: `Check that in your Detox config${this._atPath()}`,
       inspectOptions: { depth: 3 },
       debugInfo: _.omitBy({
