@@ -402,12 +402,7 @@ describe('Device', () => {
 
     it(`(relaunch) with url and userNofitication should throw`, async () => {
       const device = await aValidDevice();
-      try {
-        await device.relaunchApp({ url: 'scheme://some.url', userNotification: 'notif' });
-        fail('should fail');
-      } catch (ex) {
-        expect(ex).toBeDefined();
-      }
+      await expect(device.relaunchApp({ url: 'scheme://some.url', userNotification: 'notif' })).rejects.toThrowError();
     });
 
     it(`(relaunch) with permissions should send trigger setpermissions before app starts`, async () => {
@@ -537,13 +532,7 @@ describe('Device', () => {
 
       const device = await aValidDevice();
 
-      try {
-        await device.launchApp(launchParams);
-        fail('should throw');
-      } catch (ex) {
-        expect(ex).toBeDefined();
-      }
-
+      await expect(device.launchApp(launchParams)).rejects.toThrowError();
       expect(device.deviceDriver.deliverPayload).not.toHaveBeenCalled();
     });
 
@@ -810,12 +799,7 @@ describe('Device', () => {
 
   it(`openURL(notAnObject) should pass to device driver`, async () => {
     const device = await aValidDevice();
-    try {
-      await device.openURL('url');
-      fail('should throw');
-    } catch (ex) {
-      expect(ex).toBeDefined();
-    }
+    await expect(device.openURL('url')).rejects.toThrowError();
   });
 
   it(`reloadReactNative() should pass to device driver`, async () => {
@@ -983,6 +967,13 @@ describe('Device', () => {
 
     await device.captureViewHierarchy();
     expect(device.deviceDriver.captureViewHierarchy).toHaveBeenCalledWith('capture');
+  });
+
+  it('generateViewHierarchyXml() should return the result of the driver', async () => {
+    driverMock.driver.generateViewHierarchyXml = async () => { return 'xml'; };
+    const device = await aValidDevice();
+    const hierarchy = await device.generateViewHierarchyXml();
+    expect(hierarchy).toEqual('xml');
   });
 
   describe('_isAppRunning (internal method)', () => {

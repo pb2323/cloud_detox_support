@@ -1,4 +1,3 @@
-const EarlGrey = require('./invoke/EarlGrey');
 const Espresso = require('./invoke/Espresso');
 const EspressoWeb = require('./invoke/EspressoWeb');
 const Invoke = require('./invoke/Invoke');
@@ -11,11 +10,14 @@ class InvocationManager {
   async execute(invocation) {
    return await this.executionHandler.execute(invocation);
   }
+
+  async executeCloudPlatform(invocation) {
+    return await this.executionHandler.waitForCloudPlatform(invocation);
+  }
 }
 
 module.exports = {
   InvocationManager,
-  EarlGrey,
   Espresso: Espresso.target,
   EspressoWeb: EspressoWeb.target,
   IOS: Invoke.genericInvokeObject,

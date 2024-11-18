@@ -3,7 +3,7 @@ const RuntimeDeviceFactory = require('./base');
 
 class RuntimeDriverFactoryAndroid extends RuntimeDeviceFactory {
   _createDriverDependencies(commonDeps) {
-    const serviceLocator = require('../../../servicelocator/android');
+    const serviceLocator = require('../../servicelocator/android');
     const adb = serviceLocator.adb;
     const aapt = serviceLocator.aapt;
     const apkValidator = serviceLocator.apkValidator;
@@ -43,33 +43,25 @@ class AndroidEmulator extends RuntimeDriverFactoryAndroid {
 
 class AndroidAttached extends RuntimeDriverFactoryAndroid {
   _createDriver(deviceCookie, deps, configs) {
-    const props = {
-      adbName: deviceCookie.adbName,
-    };
-
     const { AttachedAndroidRuntimeDriver } = require('../drivers');
-    return new AttachedAndroidRuntimeDriver(deps, props);
+    return new AttachedAndroidRuntimeDriver(deps, deviceCookie);
   }
 }
 
 class Genycloud extends RuntimeDriverFactoryAndroid {
   _createDriver(deviceCookie, deps, configs) {
-    const props = {
-      instance: deviceCookie.instance,
-    };
-
     const { GenycloudRuntimeDriver } = require('../drivers');
-    return new GenycloudRuntimeDriver(deps, props);
+    return new GenycloudRuntimeDriver(deps, deviceCookie);
   }
 }
 
 class Noop extends RuntimeDriverFactoryAndroid {
   _createDriver(deviceCookie, deps, configs) {
     const props = {
-      adbName: deviceCookie.adbName,
+      adbName: undefined,
     };
-    const AndroidDriver  = require('../drivers/android/AndroidDriver');
-    return new AndroidDriver(deps, props);
+    const CloudAndroidDriver  = require('../drivers/android/cloud/cloudAndroidDriver');
+    return new CloudAndroidDriver(deps, props);
   }
 }
 

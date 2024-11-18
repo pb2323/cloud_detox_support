@@ -14,7 +14,7 @@ const log = require('../utils/logger').child({ cat: 'config' });
  */
 async function composeSessionConfig(options) {
   const { errorComposer, cliConfig, globalConfig, localConfig, isCloudSession } = options;
-  const cloudSupportedCaps = ['server', 'name', 'project', 'build'];
+  const cloudSupportedCaps = ['server', 'name', 'project', 'build', 'local', 'forceLocal', 'localIdentifier', 'networkLogsIncludeHosts', 'networkLogsExcludeHosts'];
   const session = {
     ...globalConfig.session,
     ...localConfig.session,
@@ -51,20 +51,50 @@ async function composeSessionConfig(options) {
   if (isCloudSession) {
     if (session.build != null) {
       const value = session.build;
-      if (typeof value !== 'string' || value.length === 0) {
+      if (typeof value !== 'string') {
         throw errorComposer.invalidCloudSessionProperty('build');
       }
     }
     if (session.project != null) {
       const value = session.project;
-      if (typeof value !== 'string' || value.length === 0) {
+      if (typeof value !== 'string') {
         throw errorComposer.invalidCloudSessionProperty('project');
       }
     }
     if (session.name != null) {
       const value = session.name;
-      if (typeof value !== 'string' || value.length === 0) {
+      if (typeof value !== 'string') {
         throw errorComposer.invalidCloudSessionProperty('name');
+      }
+    }
+    if (session.local != null) {
+      const value = session.local;
+      if (typeof value !== 'boolean') {
+        throw errorComposer.invalidCloudSessionProperty('local', 'boolean');
+      }
+    }
+    if (session.forceLocal != null) {
+      const value = session.forceLocal;
+      if (typeof value !== 'boolean') {
+        throw errorComposer.invalidCloudSessionProperty('forceLocal', 'boolean');
+      }
+    }
+    if (session.localIdentifier != null) {
+      const value = session.localIdentifier;
+      if (typeof value !== 'string' || value.length === 0) {
+        throw errorComposer.invalidCloudSessionProperty('localIdentifier');
+      }
+    }
+    if (session.networkLogsIncludeHosts != null) {
+      const value = session.networkLogsIncludeHosts;
+      if (!isValidNetworkHostsInput(value)) {
+        throw errorComposer.invalidCloudSessionProperty('networkLogsIncludeHosts', 'string or array of non-empty strings');
+      }
+    }
+    if (session.networkLogsExcludeHosts != null) {
+      const value = session.networkLogsExcludeHosts;
+      if (!isValidNetworkHostsInput(value)) {
+        throw errorComposer.invalidCloudSessionProperty('networkLogsExcludeHosts', 'string or array of non-empty strings');
       }
     }
     const ignoredCloudConfigParams = _.difference(Object.keys(session), cloudSupportedCaps);
@@ -85,6 +115,16 @@ async function composeSessionConfig(options) {
   }
 
   return result;
+}
+
+function isValidNetworkHostsInput(value) {
+  if (typeof value === 'string') {
+    return value.length > 0;
+  }
+  if (Array.isArray(value)) {
+    return value.length > 0 && value.every(host => typeof host === 'string' && host.length > 0);
+  }
+  return false;
 }
 
 module.exports = composeSessionConfig;
