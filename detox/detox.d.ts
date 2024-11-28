@@ -135,6 +135,11 @@ declare global {
             debugSynchronization?: number;
             server?: string;
             sessionId?: string;
+            local?: boolean;
+            forceLocal?: boolean;
+            localIdentifier?: string;
+            networkLogsIncludeHosts?: string[];
+            networkLogsExcludeHosts?: string[];
         }
 
         interface DetoxCloudAuthConfig {
